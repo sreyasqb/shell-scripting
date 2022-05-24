@@ -18,12 +18,13 @@ tput civis
 
 while true; do
     if read -t 0; then # Input ready
-        stty -echo
+        
         read -n 1 char
+        printf '\b '
         
         # echo -e "\nRead: $char\n"
         dir=$char
-        echo $dir
+        # echo $dir
 
     else # No input
         # sleep 100
@@ -41,7 +42,8 @@ while true; do
 
         if [[ $dir == s ]]; then
             printf '\n' $(seq 1 $y)
-            printf 'O'
+            printf ' %.s' $(seq 1 $(( $x + $len*2 )))
+            printf '0'
             ((y += 1))
             sleep 0.2
         fi
