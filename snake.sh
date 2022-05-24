@@ -1,30 +1,50 @@
 #!/bin/bash
-i=0
-dir='d'
-len=1
 
-# old_tty=$(stty --save)
+dir=d
+len=2
+x=0
+y=0
+function cleanup() {
+    tput cnorm
+}
+
+trap cleanup EXIT
+
+tput civis
+
 
 # Minimum required changes to terminal.  Add -echo to avoid output to screen.
-# stty -icanon min 0
+
 
 while true; do
     if read -t 0; then # Input ready
+        stty -echo
         read -n 1 char
-        echo -e "\nRead: $char\n"
+        
+        # echo -e "\nRead: $char\n"
         dir=$char
         echo $dir
-        break
+
     else # No input
         # sleep 100
-        if [[$dir='d']] then
-        printf '\r' #carriage return
-        printf '=O'
-        printf '[]%.s' $(seq 1 $len) #prints in increment wise
-        # ((i += 1))                 #increments i
-        sleep 0.2                  #sleeps the time
+
+        if [[ $dir == d ]]; then
+            printf '\r' #carriage return
+            printf ' %.s' $(seq 1 $x)
+            printf '[]%.s' $(seq 1 $len) #prints in increment wise
+            printf '=O'
+            # printf $i
+            ((x += 1)) #increments i
+            sleep 0.2  #sleeps the time
+
+        fi
+
+        if [[ $dir == s ]]; then
+            printf '\n' $(seq 1 $y)
+            printf 'O'
+            ((y += 1))
+            sleep 0.2
+        fi
     fi
 done
-
-# stty $old_tty
 
